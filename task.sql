@@ -1,5 +1,3 @@
--- Create database and tables
-
 CREATE DATABASE ShopDB;
 USE ShopDB;
 
@@ -9,20 +7,27 @@ CREATE TABLE Countries (
     PRIMARY KEY (ID)
 );
 
+CREATE TABLE Products (
+    ProductID INT,
+    ProductName VARCHAR(50),
+    PRIMARY KEY (ProductID)
+);
+
 CREATE TABLE Warehouses (
     WarehouseID INT,
-    WarehouseAmount INT,
     WarehouseName VARCHAR(50),
-    WarehouseAddress VARCHAR(50), 
+    WarehouseAddress VARCHAR(50),
+    CountryID INT,
+    FOREIGN KEY (CountryID) REFERENCES Countries(ID) ON DELETE NO ACTION,
     PRIMARY KEY (WarehouseID)
 );
 
 CREATE TABLE ProductInventory (
     ID INT,
-    ProductName VARCHAR(50),
+    ProductID INT,
     WarehouseID INT,
-    CountryID INT,
-	FOREIGN KEY (CountryID) REFERENCES Countries(ID) ON DELETE NO ACTION,
+    WarehouseAmount INT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE NO ACTION,
     FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID) ON DELETE NO ACTION,
     PRIMARY KEY (ID)
 );
@@ -33,15 +38,20 @@ INSERT INTO Countries (ID,Name)
 INSERT INTO Countries (ID,Name)
 	VALUES (2, 'Country2');
 
-INSERT INTO Warehouses (WarehouseID,WarehouseAmount,WarehouseName,WarehouseAddress)
-    VALUES (1, 2, 'Warehouse-1', 'City-1, Street-1');
-INSERT INTO Warehouses (WarehouseID,WarehouseAmount,WarehouseName,WarehouseAddress)
-    VALUES (2, 5, 'Warehouse-2', 'City-2, Street-2');
+INSERT INTO Products (ProductID,ProductName)
+	VALUES (1, 'Product-1');
+INSERT INTO Products (ProductID,ProductName)
+	VALUES (2, 'Product-2');
+
+INSERT INTO Warehouses (WarehouseID,WarehouseName,WarehouseAddress,CountryID)
+    VALUES (1, 'Warehouse-1', 'City-1, Street-1', 1);
+INSERT INTO Warehouses (WarehouseID,WarehouseName,WarehouseAddress,CountryID)
+    VALUES (2, 'Warehouse-2', 'City-2, Street-2', 2);
 
     
-INSERT INTO ProductInventory (ID,ProductName,WarehouseID,CountryID)
-	VALUES (1, 'AwersomeProduct', 1, 1);
-INSERT INTO ProductInventory (ID,ProductName,WarehouseID,CountryID)
-	VALUES (2, 'AwersomeProduct', 2, 2);
+INSERT INTO ProductInventory (ID,ProductID,WarehouseID,WarehouseAmount)
+	VALUES (1, 1, 1, 2);
+INSERT INTO ProductInventory (ID,ProductID,WarehouseID,WarehouseAmount)
+	VALUES (2, 2, 2, 5);
 
 
